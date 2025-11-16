@@ -238,11 +238,33 @@ extension_category_enum! {
 	}
 }
 
-// font extensions
+// 3D mesh extensions
 extension_category_enum! {
 	MeshExtension _ALL_MESH_EXTENSIONS {
 		Fbx = [0x46, 0x42, 0x58, 0x20],
 		Obj = [0x6F, 0x62, 0x6A],
+		// STL files (binary STL starts with 80 bytes header, then triangle count)
+		Stl = [0x73, 0x6F, 0x6C, 0x69, 0x64], // "solid" for ASCII STL
+		// 3MF (3D Manufacturing Format) - ZIP-based
+		#[serde(rename = "3mf")]
+		#[strum(serialize = "3mf")]
+		_3mf = [0x50, 0x4B, 0x03, 0x04], // ZIP signature
+		// STEP files
+		Step = [0x49, 0x53, 0x4F, 0x2D, 0x31, 0x30, 0x33, 0x30, 0x33], // "ISO-10303"
+		Stp = [0x49, 0x53, 0x4F, 0x2D, 0x31, 0x30, 0x33, 0x30, 0x33],
+		// PLY (Polygon File Format)
+		Ply = [0x70, 0x6C, 0x79], // "ply"
+		// glTF (GL Transmission Format)
+		Gltf,  // JSON-based, no magic bytes
+		Glb = [0x67, 0x6C, 0x54, 0x46], // "glTF" - binary glTF
+		// Additional common formats
+		Dae,   // COLLADA (XML-based)
+		Blend, // Blender files
+		X3d,   // X3D (XML-based)
+		Usd,   // Universal Scene Description
+		Usda,  // USD ASCII
+		Usdc,  // USD Crate (binary)
+		Usdz = [0x50, 0x4B, 0x03, 0x04],  // USDZ (ZIP-based)
 	}
 }
 

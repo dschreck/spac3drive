@@ -80,6 +80,7 @@ model Device {
   TagOnObject   TagOnObject[]
   LabelOnObject LabelOnObject[]
   Volume        Volume[]
+  Model3DData   Model3DData[]
 
   @@map("device")
 }
@@ -282,8 +283,9 @@ model Object {
   spaces      ObjectInSpace[]
   file_paths  FilePath[]
   // comments   Comment[]
-  exif_data   ExifData?
-  ffmpeg_data FfmpegData?
+  exif_data    ExifData?
+  ffmpeg_data  FfmpegData?
+  model_3d_data Model3DData?
 
   device_id Int?
   device    Device? @relation(fields: [device_id], references: [id], onDelete: Cascade)
@@ -514,6 +516,63 @@ model FfmpegMediaAudioProps {
   codec_id Int              @unique
 
   @@map("ffmpeg_media_audio_props")
+}
+
+//// 3D Model Data ////
+
+/// @shared(id: object, modelId: 14)
+model Model3DData {
+  id Int @id @default(autoincrement())
+
+  // Geometry properties
+  vertices_count    BigInt? // Total number of vertices
+  faces_count       BigInt? // Total number of faces/triangles
+  edges_count       BigInt? // Total number of edges
+
+  // Bounding box (stored as JSON or separate fields)
+  bbox_min_x        Float?
+  bbox_min_y        Float?
+  bbox_min_z        Float?
+  bbox_max_x        Float?
+  bbox_max_y        Float?
+  bbox_max_z        Float?
+
+  // Physical properties
+  volume            Float? // Calculated volume
+  surface_area      Float? // Surface area
+
+  // Quality metrics
+  is_manifold       Boolean? // Whether the mesh is watertight/manifold
+  is_closed         Boolean? // Whether the mesh is closed
+  has_normals       Boolean? // Whether normals are included
+  has_uvs           Boolean? // Whether UV coordinates are included
+  has_colors        Boolean? // Whether vertex colors are included
+
+  // Complexity metrics
+  complexity_score  Float? // Overall complexity (0-1)
+
+  // Materials and textures count
+  materials_count   Int? // Number of materials
+  textures_count    Int? // Number of textures
+
+  // Format-specific metadata (stored as JSON)
+  metadata          Bytes? // Additional format-specific data
+
+  // AI-generated tags and descriptions
+  ai_tags           String? // Comma-separated AI-generated tags
+  ai_description    String? // AI-generated description
+  ai_category       String? // AI-inferred category (e.g., "mechanical", "organic", "architectural")
+
+  // Timestamps
+  date_analyzed     DateTime? @default(now())
+
+  object_id Int    @unique
+  object    Object @relation(fields: [object_id], references: [id], onDelete: Cascade)
+
+  device_id Int?
+  device    Device? @relation(fields: [device_id], references: [id], onDelete: Cascade)
+
+  @@map("model_3d_data")
 }
 
 //// Tag ////

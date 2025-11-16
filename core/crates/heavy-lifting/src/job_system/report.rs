@@ -86,6 +86,10 @@ pub enum ReportOutputMetadata {
 		thumbnails_generated: (u32, u32),
 		thumbnails_skipped: (u32, u32),
 	},
+	Model3DProcessor {
+		processed: u64,
+		total: u64,
+	},
 	Copier {
 		source_location_id: location::id::Type,
 		target_location_id: location::id::Type,

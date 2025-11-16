@@ -39,6 +39,7 @@ pub mod file_identifier;
 pub mod indexer;
 pub mod job_system;
 pub mod media_processor;
+pub mod model3d_processor;
 pub mod utils;
 
 use media_processor::ThumbKey;
@@ -60,6 +61,8 @@ pub enum Error {
 	FileIdentifier(#[from] file_identifier::Error),
 	#[error(transparent)]
 	MediaProcessor(#[from] media_processor::Error),
+	#[error(transparent)]
+	Model3DProcessor(#[from] model3d_processor::Model3DProcessorError),
 
 	#[error(transparent)]
 	TaskSystem(#[from] TaskSystemError),
@@ -74,6 +77,7 @@ impl From<Error> for rspc::Error {
 			Error::Indexer(e) => e.into(),
 			Error::FileIdentifier(e) => e.into(),
 			Error::MediaProcessor(e) => e.into(),
+			Error::Model3DProcessor(e) => e.into(),
 			Error::TaskSystem(e) => {
 				Self::with_cause(rspc::ErrorCode::InternalServerError, e.to_string(), e)
 			}
@@ -92,6 +96,8 @@ pub enum NonCriticalError {
 	FileIdentifier(#[from] file_identifier::NonCriticalFileIdentifierError),
 	#[error(transparent)]
 	MediaProcessor(#[from] media_processor::NonCriticalMediaProcessorError),
+	#[error(transparent)]
+	Model3DProcessor(#[from] model3d_processor::NonCriticalModel3DProcessorError),
 }
 
 #[repr(i32)]

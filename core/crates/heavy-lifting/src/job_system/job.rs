@@ -54,6 +54,7 @@ pub enum JobName {
 	Indexer,
 	FileIdentifier,
 	MediaProcessor,
+	Model3DProcessor,
 	// TODO: Add more job names as needed
 	Copy,
 	Move,
