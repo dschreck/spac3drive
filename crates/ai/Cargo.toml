@@ -27,14 +27,18 @@ futures             = { workspace = true }
 futures-concurrency = { workspace = true }
 image               = { workspace = true }
 prisma-client-rust  = { workspace = true }
-reqwest             = { workspace = true, features = ["native-tls-vendored", "stream"] }
+reqwest             = { workspace = true, features = ["native-tls-vendored", "stream", "json"] }
 rmp-serde           = { workspace = true }
 rmpv                = { workspace = true }
 serde               = { workspace = true, features = ["derive"] }
+serde_json          = { workspace = true }
 thiserror           = { workspace = true }
 tokio               = { workspace = true, features = ["fs"] }
 tracing             = { workspace = true }
 uuid                = { workspace = true, features = ["serde", "v4"] }
+
+# 3D model processing dependencies
+base64              = "0.21"
 
 # Specific AI dependencies
 # Note: half and ndarray version must be the same as used in ort

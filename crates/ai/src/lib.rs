@@ -4,6 +4,7 @@ use ort::EnvironmentBuilder;
 use tracing::{debug, error};
 
 pub mod old_image_labeler;
+pub mod model3d;
 mod utils;
 
 // This path must be relative to the running binary
@@ -83,4 +84,6 @@ pub enum Error {
 	Init(#[from] ort::Error),
 	#[error(transparent)]
 	ImageLabeler(#[from] old_image_labeler::ImageLabelerError),
+	#[error(transparent)]
+	Model3D(#[from] model3d::Model3DError),
 }
